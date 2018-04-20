@@ -375,7 +375,7 @@ class Blob(object):
 
     @hash_func_name.setter
     def hash_func_name(self, value):
-        if not isinstance(value, basestring):
+        if not isinstance(value, str):
             raise TypeError(
                 'Hash function name must be string, not %r' % (
                     type(value)
