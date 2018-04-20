@@ -23,7 +23,7 @@ class BlobClient(object):
 
     def _make_url(self, path):
         if self.base_url is not None:
-            from urlparse import urljoin
+            from urllib.parse import urljoin
             return urljoin(self.base_url, path)
         else:
             from camlistore.exceptions import ServerFeatureUnavailableError
@@ -124,7 +124,7 @@ class BlobClient(object):
         its search index, but may be useful for other alternative index
         implementations.
         """
-        from urlparse import urljoin
+        from urllib.parse import urljoin
         import json
         plain_enum_url = self._make_url("camli/enumerate-blobs")
         next_enum_url = plain_enum_url

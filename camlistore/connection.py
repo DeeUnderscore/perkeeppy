@@ -58,7 +58,7 @@ class Connection(object):
 # Internals of the public "connect" function, split out so we can easily test
 # it with a mock http_session while not making the public interface look weird.
 def _connect(base_url, http_session):
-    from urlparse import urljoin
+    from urllib.parse import urljoin
 
     config_url = urljoin(base_url, '?camli.mode=config')
     config_resp = http_session.get(config_url)

@@ -28,7 +28,7 @@ class SearchClient(object):
 
     def _make_url(self, path):
         if self.base_url is not None:
-            from urlparse import urljoin
+            from urllib.parse import urljoin
             return urljoin(self.base_url, path)
         else:
             from camlistore.exceptions import ServerFeatureUnavailableError
