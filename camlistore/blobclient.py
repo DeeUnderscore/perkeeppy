@@ -1,5 +1,6 @@
 
 
+
 class BlobClient(object):
     """
     Low-level interface to Camlistore's blob store interface.
@@ -343,7 +344,7 @@ class Blob(object):
     @property
     def data(self):
         """
-        The raw blob data, as a :py:class:`str`.
+        The raw blob data, as a :py:class:`bytes`.
 
         Assigning to this property will change :py:attr:`blobref`, and
         effectively create a new blob as far as the server is concerned.
@@ -352,8 +353,8 @@ class Blob(object):
 
     @data.setter
     def data(self, value):
-        if type(value) is not str:
-            raise TypeError('Blob data must be str, not %r' % type(value))
+        if type(value) is not bytes:
+            raise TypeError(f'Blob data must be bytes, not {type(value)}')
         self._data = value
         self._blobref = None  # force to be recomputed on next access
 

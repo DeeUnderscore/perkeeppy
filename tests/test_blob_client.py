@@ -37,7 +37,7 @@ class TestBlobClient(unittest.TestCase):
         http_session.get.return_value = response
 
         response.status_code = 200
-        response.content = 'dummy blob'
+        response.content = b'dummy blob'
 
         blobs = BlobClient(
             http_session,
@@ -55,7 +55,7 @@ class TestBlobClient(unittest.TestCase):
         )
         self.assertEqual(
             result.data,
-            'dummy blob',
+            b'dummy blob',
         )
 
     def test_get_hash_mismatch(self):
@@ -67,7 +67,7 @@ class TestBlobClient(unittest.TestCase):
         http_session.get.return_value = response
 
         response.status_code = 200
-        response.content = 'dummy blob'
+        response.content = b'dummy blob'
 
         blobs = BlobClient(
             http_session,
@@ -312,9 +312,9 @@ class TestBlobClient(unittest.TestCase):
 
         blobs = MockBlobClient(http_session, 'http://example.com/')
         result = blobs.put_multi(
-            Blob("dummy1"),
-            Blob("dummy2"),
-            Blob("dummy3"),
+            Blob(b"dummy1"),
+            Blob(b"dummy2"),
+            Blob(b"dummy3"),
         )
 
         MockBlobClient.get_size_multi.assert_called_with(
@@ -328,7 +328,7 @@ class TestBlobClient(unittest.TestCase):
             files={
                 'sha1-1a434c0daa0b17e48abd4b59c632cf13501c7d24': (
                     'sha1-1a434c0daa0b17e48abd4b59c632cf13501c7d24',
-                    'dummy3',
+                    b'dummy3',
                     'application/octet-stream',
                 )
             }
@@ -347,14 +347,14 @@ class TestBlobClient(unittest.TestCase):
 class TestBlob(unittest.TestCase):
 
     def test_instantiate(self):
-        blob = Blob('hello')
+        blob = Blob(b'hello')
         self.assertEqual(
             blob.hash_func_name,
             'sha1',
         )
         self.assertEqual(
             blob.data,
-            'hello',
+            b'hello',
         )
         self.assertEqual(
             blob.blobref,
@@ -362,14 +362,14 @@ class TestBlob(unittest.TestCase):
         )
 
     def test_instantiate_different_hash(self):
-        blob = Blob('hello', hash_func_name='sha256')
+        blob = Blob(b'hello', hash_func_name='sha256')
         self.assertEqual(
             blob.hash_func_name,
             'sha256',
         )
         self.assertEqual(
             blob.data,
-            'hello',
+            b'hello',
         )
         self.assertEqual(
             blob.blobref,
@@ -378,7 +378,7 @@ class TestBlob(unittest.TestCase):
         )
 
     def test_change_hash_func(self):
-        blob = Blob('hello')
+        blob = Blob(b'hello')
         self.assertEqual(
             blob.blobref,
             'sha1-aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d',
@@ -391,27 +391,27 @@ class TestBlob(unittest.TestCase):
         )
 
     def test_change_data(self):
-        blob = Blob('hello')
+        blob = Blob(b'hello')
         self.assertEqual(
             blob.blobref,
             'sha1-aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d',
         )
-        blob.data = 'world'
+        blob.data = b'world'
         self.assertEqual(
             blob.blobref,
             'sha1-7c211433f02071597741e6ff5a8ea34789abbf43',
         )
 
-    def test_unicode_data(self):
+    def test_string_data(self):
         self.assertRaises(
             TypeError,
-            lambda: Blob(u'hello'),
+            lambda: Blob('hello'),
         )
 
-        blob = Blob('hello')
+        blob = Blob(b'hello')
 
         def change_data():
-            blob.data = u'hello'
+            blob.data = 'hello'
 
         self.assertRaises(
             TypeError,
