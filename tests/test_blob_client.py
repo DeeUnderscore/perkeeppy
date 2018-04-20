@@ -206,8 +206,8 @@ class TestBlobClient(unittest.TestCase):
         iterator = iterable.__iter__()
 
         blob_metas = []
-        blob_metas.append(iterator.next())
-        blob_metas.append(iterator.next())
+        blob_metas.append(next(iterator))
+        blob_metas.append(next(iterator))
 
         http_session.get.assert_called_with(
             'http://example.com/camli/enumerate-blobs'
@@ -230,11 +230,11 @@ class TestBlobClient(unittest.TestCase):
         }
         """
 
-        blob_metas.append(iterator.next())
+        blob_metas.append(next(iterator))
 
         self.assertRaises(
             StopIteration,
-            lambda: iterator.next(),
+            lambda: next(iterator),
         )
 
         self.assertEqual(
