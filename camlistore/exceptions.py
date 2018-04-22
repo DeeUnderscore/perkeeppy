@@ -47,3 +47,8 @@ class HashMismatchError(Exception):
     value.
     """
     pass
+
+class SigningError(Exception):
+    """
+    There was a problem with cryptographically signing a JSON blob.
+    """
