@@ -8,17 +8,14 @@ setup(
     author="Martin Atkins",
     author_email="mart@degeneration.co.uk",
 
-    test_suite='nose.collector',
+    test_suite='tests.get_tests',
 
     setup_requires=[
         'nose>=1.0',
         'sphinx>=0.5',
     ],
     tests_require=[
-        'nose>=1.0',
-        'coverage',
-        'mock',
-        'pep8',
+        'pycodestyle',
         'requests_mock',
         'requests_toolbelt'
     ],

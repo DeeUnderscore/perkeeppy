@@ -1,5 +1,5 @@
 import unittest
-import pep8
+import pycodestyle
 import os.path
 
 
@@ -10,7 +10,7 @@ modules_dir = os.path.abspath(os.path.join(tests_dir, "..", "camlistore"))
 class TestCodeStyle(unittest.TestCase):
 
     def test_pep8_conformance(self):
-        pep8style = pep8.StyleGuide()
+        pep8style = pycodestyle.StyleGuide()
         result = pep8style.check_files([tests_dir, modules_dir])
         self.assertEqual(
             result.total_errors,
