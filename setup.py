@@ -19,7 +19,8 @@ setup(
         'coverage',
         'mock',
         'pep8',
-        'requests_mock'
+        'requests_mock',
+        'requests_toolbelt'
     ],
     install_requires=[
         "requests",

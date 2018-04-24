@@ -36,11 +36,14 @@ class Connection(object):
         blob_root=None,
         search_root=None,
         sign_root=None,
+        uploadhelper_root=None
     ):
+
         self.http_session = http_session
         self.blob_root = blob_root
         self.search_root = search_root
         self.sign_root = sign_root
+        self.uploadhelper_root = uploadhelper_root
 
         from camlistore.blobclient import BlobClient
         self.blobs = BlobClient(
@@ -53,6 +56,15 @@ class Connection(object):
             http_session=http_session,
             base_url=search_root,
         )
+
+        if uploadhelper_root:
+            from camlistore.uploadhelper import UploadHelper
+            self.uploadhelper = UploadHelper(
+                http_session = http_session,
+                base_url = uploadhelper_root
+            )
+        else:
+            self.uploadhelper_root = None
 
 
 # Internals of the public "connect" function, split out so we can easily test
@@ -94,6 +106,7 @@ def _connect(base_url, http_session):
     blob_root = None
     search_root = None
     sign_root = None
+    uploadhelper_root = None
 
     if "blobRoot" in raw_config:
         blob_root = urljoin(config_url, raw_config["blobRoot"])
@@ -104,11 +117,15 @@ def _connect(base_url, http_session):
     if "jsonSignRoot" in raw_config:
         sign_root = urljoin(config_url, raw_config["jsonSignRoot"])
 
+    if "uploadHelper" in raw_config:
+        uploadhelper_root = urljoin(config_url, raw_config["uploadHelper"])
+
     return Connection(
         http_session=http_session,
         blob_root=blob_root,
         search_root=search_root,
         sign_root=sign_root,
+        uploadhelper_root=uploadhelper_root
     )
 
 

@@ -34,6 +34,9 @@ class SchemaObject(object):
         the JSON, it will raise a :class:`SigningError`
         """
 
+        #TODO: Keep a Blob in this object, and invalidate it when needed, so
+        # that we can return Blobs from other things.
+
         if not self.needs_signing:
             # Perkeep generally uses tabs for indentation for stored blobs. This
             # should not matter, and our serialization is likely different, but 
