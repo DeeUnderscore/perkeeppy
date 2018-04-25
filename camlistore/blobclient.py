@@ -292,7 +292,9 @@ class Blob(object):
     :py:class:`camlistore.exceptions.HashMismatchError` exception will be
     raised, allowing callers to check for a hash mismatch as a side-effect.
     If a blobref is provided, its hash function overrides the value passed
-    in as ``hash_func_name``.
+    in as ``hash_func_name``. A :py:class:`ValueError` will be raised by
+    :py:mod:`hashlib` if the hash funcion available during the hash mismatch
+    check.
     """
 
     def __init__(self, data, hash_func_name='sha224', blobref=None):
@@ -300,7 +302,17 @@ class Blob(object):
         self.data = data
         self.hash_func_name = hash_func_name
         if blobref is not None:
-            (hash_func_name, hash) = blobref.split('-', 1)
+            try:
+                (hash_func_name, hash) = blobref.split('-', 1)
+            except ValueError as e:
+                from camlistore.exceptions import HashMismatchError
+                raise HashMismatchError(
+                    f'Supplied blobref "{blobref}" appears malformed') from e
+
+            if hash_func_name != self.hash_func_name:
+                # We silently update hash_func_name to what the blobref says
+                self.hash_func_name = hash_func_name
+
             apparent_blobref = self.blobref
             if blobref != apparent_blobref:
                 from camlistore.exceptions import HashMismatchError

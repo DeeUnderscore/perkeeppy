@@ -75,10 +75,10 @@ class TestBlobClient(unittest.TestCase):
         )
         self.assertRaises(
             HashMismatchError,
-            lambda: blobs.get('dummy-blobref'),
+            lambda: blobs.get('sha1-dummyblobref'),
         )
         http_session.get.assert_called_with(
-            "http://example.com/blerbs/camli/dummy-blobref"
+            "http://example.com/blerbs/camli/sha1-dummyblobref"
         )
 
     def test_get_not_found(self):
@@ -305,9 +305,12 @@ class TestBlobClient(unittest.TestCase):
         response.status_code = 200
 
         MockBlobClient.get_size_multi.return_value = {
-            "sha1-c9a291475b1bcaa4aa0c4cf459c29c2c52078949": 6,
-            "sha1-403c716ea737afeb54f40549cdf5727f10ba6f18": 6,
-            "sha1-1a434c0daa0b17e48abd4b59c632cf13501c7d24": None,
+            ("sha224-"
+             "5390db278c2643999c8aa539d9cc8b587e89bdbb289c4aff97971ccf"): 6,
+            ("sha224-"
+             "5d0307b0baad2ce34aab7cac92a3d72c57ca962ffad1dd365002d45e"): 6,
+            ("sha224-"
+             "f8d2cbd0991675d4e30fe52fff2b3bd00bdbfccc189c8c2e0fad4718"): None,
         }
 
         blobs = MockBlobClient(http_session, 'http://example.com/')
@@ -318,16 +321,18 @@ class TestBlobClient(unittest.TestCase):
         )
 
         MockBlobClient.get_size_multi.assert_called_with(
-            'sha1-c9a291475b1bcaa4aa0c4cf459c29c2c52078949',
-            'sha1-403c716ea737afeb54f40549cdf5727f10ba6f18',
-            'sha1-1a434c0daa0b17e48abd4b59c632cf13501c7d24',
+            'sha224-5390db278c2643999c8aa539d9cc8b587e89bdbb289c4aff97971ccf',
+            'sha224-5d0307b0baad2ce34aab7cac92a3d72c57ca962ffad1dd365002d45e',
+            'sha224-f8d2cbd0991675d4e30fe52fff2b3bd00bdbfccc189c8c2e0fad4718',
         )
 
         http_session.post.assert_called_with(
             "http://example.com/camli/upload",
             files={
-                'sha1-1a434c0daa0b17e48abd4b59c632cf13501c7d24': (
-                    'sha1-1a434c0daa0b17e48abd4b59c632cf13501c7d24',
+                ('sha224-'
+                 'f8d2cbd0991675d4e30fe52fff2b3bd00bdbfccc189c8c2e0fad4718'): (
+                    ('sha224-f8d2cbd0991675d4e30fe5'
+                     '2fff2b3bd00bdbfccc189c8c2e0fad4718'),
                     b'dummy3',
                     'application/octet-stream',
                 )
@@ -337,9 +342,12 @@ class TestBlobClient(unittest.TestCase):
         self.assertEqual(
             result,
             [
-                'sha1-c9a291475b1bcaa4aa0c4cf459c29c2c52078949',
-                'sha1-403c716ea737afeb54f40549cdf5727f10ba6f18',
-                'sha1-1a434c0daa0b17e48abd4b59c632cf13501c7d24',
+                ('sha224-'
+                 '5390db278c2643999c8aa539d9cc8b587e89bdbb289c4aff97971ccf'),
+                ('sha224-'
+                 '5d0307b0baad2ce34aab7cac92a3d72c57ca962ffad1dd365002d45e'),
+                ('sha224-'
+                 'f8d2cbd0991675d4e30fe52fff2b3bd00bdbfccc189c8c2e0fad4718'),
             ]
         )
 
@@ -347,10 +355,11 @@ class TestBlobClient(unittest.TestCase):
 class TestBlob(unittest.TestCase):
 
     def test_instantiate(self):
-        blob = Blob(b'hello')
+        # TODO: Check for sha224 agreeing, too
+        blob = Blob(b'hello',)
         self.assertEqual(
             blob.hash_func_name,
-            'sha1',
+            'sha224',
         )
         self.assertEqual(
             blob.data,
@@ -358,7 +367,7 @@ class TestBlob(unittest.TestCase):
         )
         self.assertEqual(
             blob.blobref,
-            'sha1-aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d',
+            'sha224-ea09ae9cc6768c50fcee903ed054556e5bfc8347907f12598aa24193',
         )
 
     def test_instantiate_different_hash(self):
@@ -381,25 +390,24 @@ class TestBlob(unittest.TestCase):
         blob = Blob(b'hello')
         self.assertEqual(
             blob.blobref,
-            'sha1-aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d',
+            'sha224-ea09ae9cc6768c50fcee903ed054556e5bfc8347907f12598aa24193',
         )
-        blob.hash_func_name = 'sha256'
+        blob.hash_func_name = 'sha1'
         self.assertEqual(
             blob.blobref,
-            'sha256-'
-            '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824',
+            'sha1-aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d'
         )
 
     def test_change_data(self):
         blob = Blob(b'hello')
         self.assertEqual(
             blob.blobref,
-            'sha1-aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d',
+            'sha224-ea09ae9cc6768c50fcee903ed054556e5bfc8347907f12598aa24193',
         )
         blob.data = b'world'
         self.assertEqual(
             blob.blobref,
-            'sha1-7c211433f02071597741e6ff5a8ea34789abbf43',
+            'sha224-06d2dbdb71973e31e4f1df3d7001fa7de268aa72fcb1f6f9ea37e0e5',
         )
 
     def test_string_data(self):
