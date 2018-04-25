@@ -295,7 +295,7 @@ class Blob(object):
     in as ``hash_func_name``.
     """
 
-    def __init__(self, data, hash_func_name='sha1', blobref=None):
+    def __init__(self, data, hash_func_name='sha224', blobref=None):
         self._blobref = blobref  # will be computed on first access
         self.data = data
         self.hash_func_name = hash_func_name
@@ -361,10 +361,9 @@ class Blob(object):
         The name of the hash function to use for this blob's blobref.
 
         This must always be the name of a function that is supported by
-        both the local :py:mod:`hashlib` *and* the Camlistore server.
-        ``"sha1"`` is currently a safe choice for compatibility, and is thus
-        the default. ``"sha256"`` will also work with the implementations
-        available at the time of writing.
+        both the local :py:mod:`hashlib` *and* the Perkeep server.
+        ``"sha224"`` is currently what Perkeep itself prefers. ``"sha1"`` is
+        what Perkeep used previously.
 
         Assigning to this property will change :py:attr:`blobref`, and
         effectively create a new blob as far as the server is concerned.
