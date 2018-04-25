@@ -1,6 +1,6 @@
 
 import unittest
-from mock import MagicMock
+from unittest.mock import MagicMock
 
 from camlistore.connection import _connect, Connection
 from camlistore.exceptions import NotCamliServerError

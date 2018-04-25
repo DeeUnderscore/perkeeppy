@@ -1,6 +1,6 @@
 
 import unittest
-from mock import MagicMock
+from unittest.mock import MagicMock
 
 from camlistore.searchclient import (
     SearchClient,
