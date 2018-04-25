@@ -13,5 +13,5 @@ from camlistore.blobclient import (
 from camlistore.schema import (
     SchemaObject,
     make_claim,
-    get_permanode
+    make_permanode
 )

@@ -4,7 +4,7 @@ from datetime import datetime, timezone, timedelta
 
 from unittest import mock
 
-from camlistore.schema import SchemaObject, get_permanode, make_claim
+from camlistore.schema import SchemaObject, make_permanode, make_claim
 from camlistore.exceptions import SigningError
 
 
@@ -48,7 +48,7 @@ class TestSchemaObject(unittest.TestCase):
 class TestPermanode(unittest.TestCase):
     def test_permanode_generation(self):
         with mock.patch('camlistore.schema.SchemaObject') as mocked:
-            permanode_obj = get_permanode()
+            permanode_obj = make_permanode()
 
         self.assertEqual(mocked.call_args[0][0], 'permanode')
         self.assertIn('random', mocked.call_args[1]['data'])

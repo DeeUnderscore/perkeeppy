@@ -51,7 +51,7 @@ class SchemaObject(object):
         return Blob(signer.sign_dict(self.data))
 
 
-def get_permanode():
+def make_permanode():
     """
     Get a new permanode, as a :class:`SchemaObject`. The permanode can then be
     made into a blob with :meth:`SchemaObject.to_blob()` and uploaded to
