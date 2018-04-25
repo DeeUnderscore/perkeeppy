@@ -9,3 +9,9 @@ from camlistore.connection import (
 from camlistore.blobclient import (
     Blob,
 )
+
+from camlistore.schema import (
+    SchemaObject,
+    make_claim,
+    get_permanode
+)
