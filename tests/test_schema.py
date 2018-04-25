@@ -6,30 +6,30 @@ from unittest import mock
 
 from camlistore.schema import SchemaObject, get_permanode, make_claim
 
+
 class TestSchemaObject(unittest.TestCase):
     def test_defaults(self):
         schema_obj = SchemaObject('test')
 
-        self.assertDictEqual(schema_obj.data, 
+        self.assertDictEqual(schema_obj.data,
                              {'camliType': 'test', 'camliVersion': 1})
 
     def test_unsigned_blob(self):
-        desired =  {'camliType': 'test', 
-                    'camliVersion': 1, 
-                    'hello': 'test'}
-        
+        desired = {'camliType': 'test',
+                   'camliVersion': 1,
+                   'hello': 'test'}
+
         schema_obj = SchemaObject('test', data={'hello': 'test'})
-        
 
         blob = schema_obj.to_blob()
 
         parsed = json.loads(blob.data)
-        
+
         self.assertDictEqual(parsed, desired)
 
     def test_signed_blob(self):
         schema_obj = SchemaObject('test', needs_signing=True)
-        
+
         mock_signer = mock.MagicMock()
         mock_signer.sign_dict = mock.MagicMock(return_value=b'TESTPASSED')
 
@@ -56,17 +56,17 @@ class TestPermanode(unittest.TestCase):
 
         data = mocked.call_args[1]['data']
 
-        desired = { 'permaNode': 'sha224-aaaa',
-                    'attribute': 'test',
-                    'claimType': 'set-attribute',
-                    'value': True }
+        desired = {'permaNode': 'sha224-aaaa',
+                   'attribute': 'test',
+                   'claimType': 'set-attribute',
+                   'value': True}
 
         self.assertTrue(data.items() >= desired.items())
 
     def test_claim_errors(self):
         with self.assertRaises(ValueError):
             make_claim('sha224-aaa', 'test', 'flobble', True)
-        
+
         with self.assertRaises(ValueError):
             make_claim('sha224-aaa', 'test', 'set', True, date=False)
 
@@ -88,4 +88,3 @@ class TestPermanode(unittest.TestCase):
 
         date_received = mocked.call_args[1]['data']['claimDate']
         self.assertEqual(date_received, desired.isoformat())
-

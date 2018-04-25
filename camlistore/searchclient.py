@@ -53,7 +53,7 @@ class SearchClient(object):
             # TODO: Understand how constraints work and implement them
             # https://github.com/bradfitz/camlistore/blob/
             # ca58231336e5711abacb059763beb06e8b2b1788/pkg/search/query.go#L255
-            #"constraint": "",
+            # "constraint": "",
             "expression": expression,
         }
 

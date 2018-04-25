@@ -60,8 +60,8 @@ class Connection(object):
         if uploadhelper_root:
             from camlistore.uploadhelper import UploadHelper
             self.uploadhelper = UploadHelper(
-                http_session = http_session,
-                base_url = uploadhelper_root
+                http_session=http_session,
+                base_url=uploadhelper_root
             )
         else:
             self.uploadhelper_root = None

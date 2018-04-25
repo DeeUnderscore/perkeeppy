@@ -1,6 +1,3 @@
-
-
-
 class BlobClient(object):
     """
     Low-level interface to Camlistore's blob store interface.
