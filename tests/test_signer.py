@@ -78,6 +78,29 @@ class TestSigner(unittest.TestCase):
 
         self.assertEqual(out_str, result)
 
+    def test_dict_signing(self):
+        in_dict = {"camliVersion": 1,
+                   "camliSigner": "sha1-aaaabbbbccccdddd",
+                   "someOtherData": "Hello"}
+
+        out_str = (b'{\n\t"camliVersion": 1,\n'
+                   b'\t"camliSigner": "sha1-aaaabbbbccccdddd",\n'
+                   b'\t"someOtherData": "Hello"\n'
+                   b',"camliSig":"AAABBB"}')
+
+        mock = requests_mock.Mocker()
+        mock.post('https://example.com/perkeep/camli/sig/sign',
+                  content=out_str)
+
+        with mock:
+            result = self.signer.sign_dict(in_dict)
+
+        posted_dict = parse_qs(mock.last_request.text)
+        self.assertIn('json', posted_dict)
+        self.assertDictEqual(json.loads(posted_dict['json'][0]), in_dict)
+
+        self.assertEqual(out_str, result)
+
     def test_signing_throw_error(self):
         mock = requests_mock.Mocker()
         mock.post('https://example.com/perkeep/camli/sig/sign',

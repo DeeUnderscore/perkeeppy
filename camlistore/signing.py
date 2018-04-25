@@ -1,5 +1,6 @@
 from urllib.parse import urljoin
 import requests
+import json
 
 from camlistore.exceptions import SigningError, ServerError
 
@@ -61,7 +62,7 @@ class Signer(object):
         if 'camliSigner' not in source:
             source['camliSigner'] = self.camli_signer
 
-        self.sign_string(json.dumps(source))
+        return self.sign_string(json.dumps(source))
 
     def sign_string(self, source):
         """
