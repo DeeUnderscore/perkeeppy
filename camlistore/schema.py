@@ -45,7 +45,7 @@ class SchemaObject(object):
             return Blob(json.dumps(self.data, indent='\t').encode('utf8'))
 
         if not signer:
-            raise SigningErorr(
+            raise SigningError(
                 'A signer was needed, and none was passed to to_blob()')
 
         return Blob(signer.sign_dict(self.data))

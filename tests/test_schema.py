@@ -5,6 +5,7 @@ from datetime import datetime, timezone, timedelta
 from unittest import mock
 
 from camlistore.schema import SchemaObject, get_permanode, make_claim
+from camlistore.exceptions import SigningError
 
 
 class TestSchemaObject(unittest.TestCase):
@@ -36,6 +37,12 @@ class TestSchemaObject(unittest.TestCase):
         blob = schema_obj.to_blob(signer=mock_signer)
 
         self.assertEqual(blob.data, b'TESTPASSED')
+
+    def test_signed_exception(self):
+        schema_obj = SchemaObject('test', needs_signing=True)
+
+        with self.assertRaises(SigningError):
+            schema_obj.to_blob()
 
 
 class TestPermanode(unittest.TestCase):
