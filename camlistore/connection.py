@@ -57,6 +57,15 @@ class Connection(object):
             base_url=search_root,
         )
 
+        if sign_root:
+            from camlistore.signing import Signer
+            self.signer = Signer(
+                http_session=http_session,
+                base_url=sign_root
+            )
+        else:
+            self.signer = None
+
         if uploadhelper_root:
             from camlistore.uploadhelper import UploadHelper
             self.uploadhelper = UploadHelper(
