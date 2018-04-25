@@ -74,9 +74,13 @@ class SearchClient(object):
 
         raw_data = json.loads(resp.content)
 
-        return [
-            SearchResult(x["blob"]) for x in raw_data["blobs"]
-        ]
+
+        if raw_data["blobs"] is not None:
+            return [
+                SearchResult(x["blob"]) for x in raw_data["blobs"]
+            ]
+        else:
+            return []
 
     def describe_blob(self, blobref):
         """
