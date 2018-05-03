@@ -2,8 +2,8 @@
 import unittest
 from unittest.mock import MagicMock
 
-from camlistore.connection import _connect, Connection
-from camlistore.exceptions import NotCamliServerError
+from perkeeppy.connection import _connect, Connection
+from perkeeppy.exceptions import NotPerkeepServerError
 
 
 class TestConnect(unittest.TestCase):
@@ -63,7 +63,7 @@ class TestConnect(unittest.TestCase):
         response.url = "http://example.com/?camli.mode=config"
 
         self.assertRaises(
-            NotCamliServerError,
+            NotPerkeepServerError,
             lambda: _connect(
                 'http://example.com/',
                 http_session=http_session,
@@ -84,7 +84,7 @@ class TestConnect(unittest.TestCase):
         response.url = "http://example.com/?camli.mode=config"
 
         self.assertRaises(
-            NotCamliServerError,
+            NotPerkeepServerError,
             lambda: _connect(
                 'http://example.com/',
                 http_session=http_session,

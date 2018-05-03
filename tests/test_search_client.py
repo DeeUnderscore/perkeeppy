@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import MagicMock
 
-from camlistore.searchclient import (
+from perkeeppy.searchclient import (
     SearchClient,
     ClaimMeta,
     SearchResult,

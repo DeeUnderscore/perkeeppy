@@ -4,7 +4,7 @@ import os.path
 
 
 tests_dir = os.path.dirname(__file__)
-modules_dir = os.path.abspath(os.path.join(tests_dir, "..", "camlistore"))
+modules_dir = os.path.abspath(os.path.join(tests_dir, "..", "perkeeppy"))
 
 
 class TestCodeStyle(unittest.TestCase):

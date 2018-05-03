@@ -4,7 +4,7 @@ import requests_mock
 from requests_toolbelt.multipart.decoder import MultipartDecoder
 import io
 
-from camlistore.uploadhelper import UploadHelper
+from perkeeppy.uploadhelper import UploadHelper
 
 
 class UploadHelperTest(unittest.TestCase):

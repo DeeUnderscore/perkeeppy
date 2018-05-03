@@ -4,8 +4,8 @@ from datetime import datetime, timezone, timedelta
 
 from unittest import mock
 
-from camlistore.schema import SchemaObject, make_permanode, make_claim
-from camlistore.exceptions import SigningError
+from perkeeppy.schema import SchemaObject, make_permanode, make_claim
+from perkeeppy.exceptions import SigningError
 
 
 class TestSchemaObject(unittest.TestCase):
@@ -47,7 +47,7 @@ class TestSchemaObject(unittest.TestCase):
 
 class TestPermanode(unittest.TestCase):
     def test_permanode_generation(self):
-        with mock.patch('camlistore.schema.SchemaObject') as mocked:
+        with mock.patch('perkeeppy.schema.SchemaObject') as mocked:
             permanode_obj = make_permanode()
 
         self.assertEqual(mocked.call_args[0][0], 'permanode')
@@ -55,7 +55,7 @@ class TestPermanode(unittest.TestCase):
         self.assertTrue(mocked.call_args[1]['needs_signing'])
 
     def test_claim(self):
-        with mock.patch('camlistore.schema.SchemaObject') as mocked:
+        with mock.patch('perkeeppy.schema.SchemaObject') as mocked:
             claim = make_claim('sha224-aaaa', 'test', 'set', True)
 
         self.assertEqual(mocked.call_args[0][0], 'claim')
@@ -84,7 +84,7 @@ class TestPermanode(unittest.TestCase):
 
         desired = datetime(2010, 1, 2, 10, 20, 30, tzinfo=timezone.utc)
 
-        with mock.patch('camlistore.schema.SchemaObject') as mocked:
+        with mock.patch('perkeeppy.schema.SchemaObject') as mocked:
             make_claim('sha224-aaa', 'test', 'set', True, date=naive)
 
         date_received = mocked.call_args[1]['data']['claimDate']

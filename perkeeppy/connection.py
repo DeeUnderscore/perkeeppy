@@ -3,16 +3,16 @@ import json
 import pkg_resources
 
 
-version = pkg_resources.get_distribution("camlistore").version
-user_agent = "python-camlistore/%s" % version
+version = pkg_resources.get_distribution("perkeeppy").version
+user_agent = "python-perkeeppy/%s" % version
 
 
 class Connection(object):
     """
-    Represents a logical connection to a camlistore server.
+    Represents a logical connection to a Perkeep server.
 
     Most callers should not instantiate this directly, but should instead
-    use :py:func:`connect`, which implements the Camlistore server discovery
+    use :py:func:`connect`, which implements the Perkeep server discovery
     protocol to auto-configure an instance of this class.
 
     Note that this does not imply a TCP or any other kind of socket connection,
@@ -23,11 +23,11 @@ class Connection(object):
     """
 
     #: Provides access to the server's blob store via an instance of
-    #: :py:class:`camlistore.blobclient.BlobClient`.
+    #: :py:class:`perkeeppy.blobclient.BlobClient`.
     blobs = None
 
     #: Provides access to the server's search interface via an instance of
-    #: :py:class:`camlistore.searchclient.SearchClient`.
+    #: :py:class:`perkeeppy.searchclient.SearchClient`.
     searcher = None
 
     def __init__(
@@ -45,20 +45,20 @@ class Connection(object):
         self.sign_root = sign_root
         self.uploadhelper_root = uploadhelper_root
 
-        from camlistore.blobclient import BlobClient
+        from perkeeppy.blobclient import BlobClient
         self.blobs = BlobClient(
             http_session=http_session,
             base_url=blob_root,
         )
 
-        from camlistore.searchclient import SearchClient
+        from perkeeppy.searchclient import SearchClient
         self.searcher = SearchClient(
             http_session=http_session,
             base_url=search_root,
         )
 
         if sign_root:
-            from camlistore.signing import Signer
+            from perkeeppy.signing import Signer
             self.signer = Signer(
                 http_session=http_session,
                 base_url=sign_root
@@ -67,7 +67,7 @@ class Connection(object):
             self.signer = None
 
         if uploadhelper_root:
-            from camlistore.uploadhelper import UploadHelper
+            from perkeeppy.uploadhelper import UploadHelper
             self.uploadhelper = UploadHelper(
                 http_session=http_session,
                 base_url=uploadhelper_root
@@ -85,8 +85,8 @@ def _connect(base_url, http_session):
     config_resp = http_session.get(config_url)
 
     if config_resp.status_code != 200:
-        from camlistore.exceptions import NotCamliServerError
-        raise NotCamliServerError(
+        from perkeeppy.exceptions import NotPerkeepServerError
+        raise NotPerkeepServerError(
             "Configuration request returned %i %s" % (
                 config_resp.status_code,
                 config_resp.reason,
@@ -102,9 +102,9 @@ def _connect(base_url, http_session):
         raw_config = json.loads(config_resp.content)
     except ValueError:
         # Assume ValueError means JSON decoding failed, which means this
-        # thing is not acting like a valid camli server.
-        from camlistore.exceptions import NotCamliServerError
-        raise NotCamliServerError(
+        # thing is not acting like a valid Perkeep server.
+        from perkeeppy.exceptions import NotPerkeepServerError
+        raise NotPerkeepServerError(
             "Server did not return valid JSON at %s" % config_url
         )
 
@@ -140,11 +140,11 @@ def _connect(base_url, http_session):
 
 def connect(base_url):
     """
-    Create a connection to the Camlistore instance at the given base URL.
+    Create a connection to the Perkeep instance at the given base URL.
 
-    This function implements the Camlistore discovery protocol to recognize
-    a server and automatically determine which features are available,
-    ultimately instantiating and returning a :py:class:`Connection` object.
+    This function implements the Perkeep discovery protocol to recognize a
+    server and automatically determine which features are available, ultimately
+    instantiating and returning a :py:class:`Connection` object.
 
     For now we assume an unauthenticated connection, which is generally
     only possible when connecting via ``localhost``. In future this function

@@ -2,7 +2,7 @@ from urllib.parse import urljoin
 import requests
 import json
 
-from camlistore.exceptions import SigningError, ServerError
+from perkeeppy.exceptions import SigningError, ServerError
 
 CAMLI_VERSION = 1
 
@@ -12,7 +12,7 @@ class Signer(object):
     An interface to the Perkeep signing helper.
 
     In general, instances of this should be obtained from
-    :attr:`camlistore.Connection.signer`
+    :attr:`perkeeppy.Connection.signer`
 
     ``base_url`` should include a trailing slash. ``camli_signer`` can,
     optionally, be a string with the blobref of the public key. If left out,

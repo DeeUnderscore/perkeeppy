@@ -24,7 +24,7 @@ class BlobClient(object):
             from urllib.parse import urljoin
             return urljoin(self.base_url, path)
         else:
-            from camlistore.exceptions import ServerFeatureUnavailableError
+            from perkeeppy.exceptions import ServerFeatureUnavailableError
             raise ServerFeatureUnavailableError(
                 "Server does not support blob interface"
             )
@@ -47,12 +47,12 @@ class BlobClient(object):
         if resp.status_code == 200:
             return Blob(resp.content, blobref=blobref)
         elif resp.status_code == 404:
-            from camlistore.exceptions import NotFoundError
+            from perkeeppy.exceptions import NotFoundError
             raise NotFoundError(
                 "Blob not found: %s" % blobref,
             )
         else:
-            from camlistore.exceptions import ServerError
+            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to get blob %s: server returned %i %s" % (
                     blobref,
@@ -74,12 +74,12 @@ class BlobClient(object):
         if resp.status_code == 200:
             return int(resp.headers['content-length'])
         elif resp.status_code == 404:
-            from camlistore.exceptions import NotFoundError
+            from perkeeppy.exceptions import NotFoundError
             raise NotFoundError(
                 "Blob not found: %s" % blobref,
             )
         else:
-            from camlistore.exceptions import ServerError
+            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to get metadata for blob %s: server returned %i %s" % (
                     blobref,
@@ -99,7 +99,7 @@ class BlobClient(object):
         it's better to use :py:meth:`get_size_multi`; known blobs will have
         a size, while unknown blobs will indicate ``None``.
         """
-        from camlistore.exceptions import NotFoundError
+        from perkeeppy.exceptions import NotFoundError
         try:
             self.get_size(blobref)
         except NotFoundError:
@@ -131,7 +131,7 @@ class BlobClient(object):
 
             resp = self.http_session.get(next_enum_url)
             if resp.status_code != 200:
-                from camlistore.exceptions import ServerError
+                from perkeeppy.exceptions import ServerError
                 raise ServerError(
                     "Failed to enumerate blobs from %s: got %i %s" % (
                         next_enum_url,
@@ -197,7 +197,7 @@ class BlobClient(object):
         resp = self.http_session.post(stat_url, data=form_data)
 
         if resp.status_code != 200:
-            from camlistore.exceptions import ServerError
+            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to get sizes of blobs: got %i %s" % (
                     resp.status_code,
@@ -261,7 +261,7 @@ class BlobClient(object):
         resp = self.http_session.post(upload_url, files=files_to_post)
 
         if resp.status_code != 200:
-            from camlistore.exceptions import ServerError
+            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to upload blobs: got %i %s" % (
                     resp.status_code,
@@ -305,7 +305,7 @@ class Blob(object):
             try:
                 (hash_func_name, hash) = blobref.split('-', 1)
             except ValueError as e:
-                from camlistore.exceptions import HashMismatchError
+                from perkeeppy.exceptions import HashMismatchError
                 raise HashMismatchError(
                     f'Supplied blobref "{blobref}" appears malformed') from e
 
@@ -315,7 +315,7 @@ class Blob(object):
 
             apparent_blobref = self.blobref
             if blobref != apparent_blobref:
-                from camlistore.exceptions import HashMismatchError
+                from perkeeppy.exceptions import HashMismatchError
                 raise HashMismatchError(
                     "Expected blobref %s but provided data has blobref %s" % (
                         blobref,

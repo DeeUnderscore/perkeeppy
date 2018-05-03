@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import MagicMock
 
-from camlistore.blobclient import BlobClient, BlobMeta, Blob
+from perkeeppy.blobclient import BlobClient, BlobMeta, Blob
 
 
 class TestBlobClient(unittest.TestCase):
@@ -24,7 +24,7 @@ class TestBlobClient(unittest.TestCase):
             http_session=http_session,
             base_url=None,
         )
-        from camlistore.exceptions import ServerFeatureUnavailableError
+        from perkeeppy.exceptions import ServerFeatureUnavailableError
         self.assertRaises(
             ServerFeatureUnavailableError,
             lambda: blobs._make_blob_url('dummy-blobref'),
@@ -59,7 +59,7 @@ class TestBlobClient(unittest.TestCase):
         )
 
     def test_get_hash_mismatch(self):
-        from camlistore.exceptions import HashMismatchError
+        from perkeeppy.exceptions import HashMismatchError
 
         http_session = MagicMock()
         http_session.get = MagicMock()
@@ -94,7 +94,7 @@ class TestBlobClient(unittest.TestCase):
             http_session,
             'http://example.com/blerbs/',
         )
-        from camlistore.exceptions import NotFoundError
+        from perkeeppy.exceptions import NotFoundError
         self.assertRaises(
             NotFoundError,
             lambda: blobs.get('dummy-blobref'),
@@ -116,7 +116,7 @@ class TestBlobClient(unittest.TestCase):
             http_session,
             'http://example.com/blerbs/',
         )
-        from camlistore.exceptions import ServerError
+        from perkeeppy.exceptions import ServerError
         self.assertRaises(
             ServerError,
             lambda: blobs.get('dummy-blobref'),
@@ -169,7 +169,7 @@ class TestBlobClient(unittest.TestCase):
             'foo',
         )
 
-        from camlistore.exceptions import NotFoundError
+        from perkeeppy.exceptions import NotFoundError
         MockBlobClient.get_size.side_effect = NotFoundError('dummy')
 
         result = blobs.blob_exists('foo')

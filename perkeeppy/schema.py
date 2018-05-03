@@ -2,8 +2,8 @@ import json
 import random
 import datetime
 
-from camlistore.blobclient import Blob
-from camlistore.exceptions import SigningError
+from perkeeppy.blobclient import Blob
+from perkeeppy.exceptions import SigningError
 
 CAMLI_VERSION = 1  # Schema version, per Perkeep
 

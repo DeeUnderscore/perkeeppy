@@ -1,18 +1,19 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="camlistore",
-    version="dev",
-    description="Camlistore Client Library",
+    name="perkeeppy",
+    version="0.1.0",
+    description="Library for interacting with the Perkeep API",
     packages=find_packages(),
+    maintainer="Dariusz Anzorge",
+    maintainer_email="d.anzorge@gmail.com",
     author="Martin Atkins",
     author_email="mart@degeneration.co.uk",
 
     test_suite='tests.get_tests',
 
     setup_requires=[
-        'nose>=1.0',
-        'sphinx>=0.5',
+        'sphinx>=0.5'
     ],
     tests_require=[
         'pycodestyle',
@@ -26,5 +27,6 @@ setup(
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3.6"
     ]
 )

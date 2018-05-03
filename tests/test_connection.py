@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import MagicMock
 
-from camlistore.connection import Connection
+from perkeeppy.connection import Connection
 
 
 class TestConnection(unittest.TestCase):

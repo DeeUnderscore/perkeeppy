@@ -2,7 +2,7 @@
 
 class SearchClient(object):
     """
-    Low-level interface to Camlistore indexer search operations.
+    Low-level interface to Perkeep indexer search operations.
 
     The indexer component visits all blobs in the store and infers
     connections between them based on its knowledge of certain schema
@@ -17,9 +17,9 @@ class SearchClient(object):
     for filesystem traversal than the raw blob interface.
 
     Callers should not instantiate this class directly. Instead, call
-    :py:func:`camlistore.connect` to obtain a
-    :py:class:`camlistore.Connection`
-    object and access :py:attr:`camlistore.Connection.searcher`.
+    :py:func:`perkeeppy.connect` to obtain a
+    :py:class:`perkeeppy.Connection`
+    object and access :py:attr:`perkeeppy.Connection.searcher`.
     """
 
     def __init__(self, http_session, base_url):
@@ -31,7 +31,7 @@ class SearchClient(object):
             from urllib.parse import urljoin
             return urljoin(self.base_url, path)
         else:
-            from camlistore.exceptions import ServerFeatureUnavailableError
+            from perkeeppy.exceptions import ServerFeatureUnavailableError
             raise ServerFeatureUnavailableError(
                 "Server does not support search interface"
             )
@@ -63,7 +63,7 @@ class SearchClient(object):
         )
 
         if resp.status_code != 200:
-            from camlistore.exceptions import ServerError
+            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to search for %r: server returned %i %s" % (
                     expression,
@@ -73,7 +73,6 @@ class SearchClient(object):
             )
 
         raw_data = json.loads(resp.content)
-
 
         if raw_data["blobs"] is not None:
             return [
@@ -102,7 +101,7 @@ class SearchClient(object):
         )
 
         if resp.status_code != 200:
-            from camlistore.exceptions import ServerError
+            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to describe %s: server returned %i %s" % (
                     blobref,
@@ -144,7 +143,7 @@ class SearchClient(object):
         )
 
         if resp.status_code != 200:
-            from camlistore.exceptions import ServerError
+            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to get claims for %s: server returned %i %s" % (
                     blobref,
@@ -171,7 +170,7 @@ class SearchResult(object):
         self.blobref = blobref
 
     def __repr__(self):
-        return "<camlistore.searchclient.SearchResult %s>" % self.blobref
+        return "<perkeeppy.searchclient.SearchResult %s>" % self.blobref
 
 
 class BlobDescription(object):
@@ -237,7 +236,7 @@ class BlobDescription(object):
             return self.searcher.describe_blob(blobref)
 
     def __repr__(self):
-        return "<camlistore.searchclient.BlobDescription %s %s>" % (
+        return "<perkeeppy.searchclient.BlobDescription %s %s>" % (
             self.type if self.type is not None else "(unknown)",
             self.blobref if self.blobref is not None else "(unknown)",
         )
@@ -328,7 +327,7 @@ class ClaimMeta(object):
         return self.raw_dict.get("permanode")
 
     def __repr__(self):
-        parts = ["camlistore.searchclient.ClaimMeta", self.type]
+        parts = ["perkeeppy.searchclient.ClaimMeta", self.type]
         attr = self.attr
         value = self.value
         target = self.target_blobref

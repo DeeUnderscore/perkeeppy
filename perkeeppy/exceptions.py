@@ -2,16 +2,16 @@
 class ConnectionError(Exception):
     """
     There was some kind of error while establishing an initial connection
-    to a Camlistore server.
+    to a Perkeep server.
     """
     pass
 
 
-class NotCamliServerError(ConnectionError):
+class NotPerkeepServerError(ConnectionError):
     """
-    When attempting to connect to a Camlistore server it was determined that
-    the given resource does not implement the Camlistore protocol, and is
-    thus assumed not to be a Camlistore server.
+    When attempting to connect to a Perkeep server it was determined that
+    the given resource does not implement the Perkeep protocol, and is
+    thus assumed not to be a Perkeep server.
     """
     pass
 

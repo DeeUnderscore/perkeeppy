@@ -4,8 +4,8 @@ import requests_mock
 import json
 from urllib.parse import parse_qs
 
-from camlistore.signing import Signer
-from camlistore.exceptions import SigningError
+from perkeeppy.signing import Signer
+from perkeeppy.exceptions import SigningError
 
 
 class TestSigner(unittest.TestCase):
