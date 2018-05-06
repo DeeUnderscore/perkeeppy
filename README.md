@@ -5,7 +5,7 @@
 This library provides an interface for interacting with API endpoints that the [Perkeep](https://perkeep.org/) (previously called Camlistore)  daemon exposes. It supports the basic operations, such as put/get, as well as some higher level APIs, such as the signing helper.
 
 ## Background ##
-This library is based on the earlier work of Martin Atkins – the [camlistore](https://pypi.org/project/camlistore/) ([repository](https://github.com/apparentlymart/python-camlistore)) library. The previous library was updated to Python 3. prekeeppy adds extra functionality for uploading schema blobs, using the signing endpoint, and using the unofficial upload helper. 
+This library is based on the earlier work of Martin Atkins – the [camlistore](https://pypi.org/project/camlistore/) ([repository](https://github.com/apparentlymart/python-camlistore)) library. *perkeeppy* updates the original library to Python 3. It also adds extra functionality for uploading schema blobs, using the signing endpoint, and using the unofficial upload helper. 
 
 ## Installation ##
 
