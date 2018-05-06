@@ -6,30 +6,30 @@ Install The Module
 
 This is a standard Python module and can be installed using ``pip`` as usual:
 
-* ``pip install camlistore``
+* ``pip install .``
 
-Connect To Camlistore
----------------------
+Connect To Perkeep
+------------------
 
-Before this library will be of any use you will need a Camlistore server
-running. See `the Camlistore docs`_ for more details.
+Before this library will be of any use you will need a Perkeep server running.
+See `the Perkeep docs`_ for more details.
 
 Once you have a server running you can connect to it using
-:py:func:`camlistore.connect`. For example, if you have your Camlistore
-server running on localhost:
+:py:func:`perkeeppy.connect`. For example, if you have your Perkeep server 
+running on localhost:
 
 .. code-block:: python
 
-    import camlistore
+    import perkeeppy
 
-    conn = camlistore.connect("http://localhost:3179/")
+    conn = perkeeppy.connect("http://localhost:3179/")
 
 This function will contact the specified URL to make sure it looks like
-a valid Camlistore server and discover some details about its configuration.
-The ``conn`` return value is then a :py:class:`camlistore.Connection` object,
+a valid Perkeep server and discover some details about its configuration. The 
+``conn`` return value is then a :py:class:`perkeeppy.Connection` object, 
 configured and ready to access the server.
 
-.. _`the Camlistore docs`: http://camlistore.org/docs/
+.. _`the Perkeep docs`: https://perkeep.org/doc/
 
 Try Writing A Blob!
 -------------------
@@ -39,23 +39,23 @@ write a blob and retrieve it again:
 
 .. code-block:: python
 
-    blobref = conn.blobs.put(camlistore.Blob("Hello, Camlistore!"))
+    blobref = conn.blobs.put(perkeeppy.Blob(b"Hello, Perkeep!"))
     hello_blob = conn.blobs.get(blobref)
-    print hello_blob.data
+    print(hello_blob.data.decode())
 
 If things are working as expected, this should print out
-``Hello, Camlistore!``, having successfully written that string into the store
+``Hello, Perkeep!``, having successfully written that string into the store
 and retrieved it again. You're now ready to proceed to the following sections
 to learn more about the blob store and search interfaces.
 
 This program will fail if the connection is not configured properly. For
-example, it may fail if the Camlistore server requires authentication, since
+example, it may fail if the Perkeep server requires authentication, since
 our example does not account for that.
 
 Connection Interface Reference
 ------------------------------
 
-.. autofunction:: camlistore.connect
+.. autofunction:: perkeeppy.connect
 
-.. autoclass:: camlistore.Connection
+.. autoclass:: perkeeppy.Connection
     :members:

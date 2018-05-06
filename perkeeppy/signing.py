@@ -72,8 +72,9 @@ class Signer(object):
         For a yet-unserialized dictionary, :meth:`sign_dict` is generally a
         better choice, as it will supply the mandatory JSON fields if they are
         not present. This method will not perform any checks on the input, but
-        instead it will return a :class:`SigningError` if the remote returns an
-        error, and attach the Requests exception as cause.
+        instead it will return a :class:`perkeeppy.exceptions.SigningError` if
+        the remote returns an error, and attach the Requests exception as
+        cause.
 
         Returns a :class:`bytes` object with the signed JSON
         """

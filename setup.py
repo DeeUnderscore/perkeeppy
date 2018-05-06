@@ -13,7 +13,7 @@ setup(
     test_suite='tests.get_tests',
 
     setup_requires=[
-        'sphinx>=0.5'
+        'sphinx>=1.7.0'
     ],
     tests_require=[
         'pycodestyle',

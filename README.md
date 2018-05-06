@@ -30,6 +30,15 @@ received_blob = conn.blob_root.get(blobref)
 print(f'{received_blob.blobref}: {received_blob.data.decode()}')
 ```
 
+### Documentation ###
+Documentation uses Sphinx. You can have `setup.py` build it:
+
+```shellsession
+$ python setup.py build_sphinx
+```
+
+The rendered HTML files will be in `docs/build/html`, with the index at `docs/build/html/index.html`.
+
 ## Project ##
 You can find the project repository at [github.com/DeeUnderscore/perkeeppy](https://github.com/DeeUnderscore/perkeeppy).
 

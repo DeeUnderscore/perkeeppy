@@ -1,19 +1,19 @@
 Accessing the Blob Store
 ========================
 
-The lowest-level interface in Camlistore is the raw blob store, which provides
-a mechanism to store and retrieve immutable objects. All other Camlistore
+The lowest-level interface in Perkeep is the raw blob store, which provides
+a mechanism to store and retrieve immutable objects. All other Perkeep
 functionality is built on this base layer.
 
 Blob store functionality is accessed via
-:py:attr:`camlistore.Connection.blobs`, which is a pre-configured instance
-of :py:class:`camlistore.blobclient.BlobClient`.
+:py:attr:`perkeeppy.Connection.blobs`, which is a pre-configured instance
+of :py:class:`perkeeppy.blobclient.BlobClient`.
 
-.. autoclass:: camlistore.blobclient.BlobClient
+.. autoclass:: perkeeppy.blobclient.BlobClient
    :members:
 
-.. autoclass:: camlistore.Blob
+.. autoclass:: perkeeppy.Blob
    :members:
 
-.. autoclass:: camlistore.blobclient.BlobMeta
+.. autoclass:: perkeeppy.blobclient.BlobMeta
    :members:
