@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+__version__ = '0.1.0'
 
 # This module just imports stuff from sub-modules to establish the
 # main public interface. Only imports should be added here.

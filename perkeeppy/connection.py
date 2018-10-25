@@ -14,8 +14,8 @@ from perkeeppy.uploadhelper import UploadHelper
 from perkeeppy.exceptions import NotPerkeepServerError
 
 
-version = pkg_resources.get_distribution("perkeeppy").version
-user_agent = "python-perkeeppy/%s" % version
+from perkeeppy import __version__
+user_agent = "python-perkeeppy/%s" % __version__
 
 
 class Connection(object):

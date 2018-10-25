@@ -60,8 +60,10 @@ class SearchClient(object):
         if isinstance(q, str):
             data['expression'] = q
         elif isinstance(q, dict):
-            # TODO: Maybe create Query Builder Pattern class type to support pythonic constraint
-            # constraint is just a json object as described here: https://perkeep.org/pkg/search#Constraint
+            # TODO: Maybe create Query Builder Pattern class type to
+            #   support pythonic constraint
+            # constraint is just a json object as described here:
+            #   https://perkeep.org/pkg/search#Constraint
             data['constraint'] = q
 
         resp = self.http_session.post(

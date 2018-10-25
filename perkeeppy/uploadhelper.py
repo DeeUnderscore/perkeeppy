@@ -4,6 +4,7 @@ import requests
 
 from .exceptions import ServerError
 
+
 class UploadHelper(object):
     """
     An interface to the Perkeep upload helper.

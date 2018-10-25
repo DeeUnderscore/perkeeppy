@@ -4,7 +4,12 @@ import json
 import hashlib
 
 from urllib.parse import urljoin
-from perkeeppy.exceptions import ServerFeatureUnavailableError, NotFoundError, ServerError, HashMismatchError
+from perkeeppy.exceptions import (
+    ServerFeatureUnavailableError,
+    NotFoundError,
+    ServerError,
+    HashMismatchError
+)
 
 
 class BlobClient(object):

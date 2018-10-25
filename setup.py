@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
+from perkeeppy import __version__
 
 setup(
     name="perkeeppy",
-    version="0.1.0",
+    version=__version__,
     description="Library for interacting with the Perkeep API",
     packages=find_packages(),
     maintainer="Dariusz Anzorge",
