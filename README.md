@@ -43,3 +43,7 @@ The rendered HTML files will be in `docs/build/html`, with the index at `docs/bu
 You can find the project repository at [github.com/DeeUnderscore/perkeeppy](https://github.com/DeeUnderscore/perkeeppy).
 
 This library is licensed under the MIT license. For details, see [LICENSE](/LICENSE).
+
+## Links ##
+
+* Constraints: https://perkeep.org/pkg/search#Constraint
