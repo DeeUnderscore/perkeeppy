@@ -1,3 +1,6 @@
+|travis|
+
+
 # perkeeppy
 
 **perkeeppy** is a library for interacting with the HTTP API of a Perkeep server from Python 3.
