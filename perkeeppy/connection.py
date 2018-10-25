@@ -1,6 +1,17 @@
+# -*- coding: utf-8 -*-
+
 
 import json
 import pkg_resources
+from urllib.parse import urljoin
+
+import requests
+
+from perkeeppy.blobclient import BlobClient
+from perkeeppy.searchclient import SearchClient
+from perkeeppy.signing import Signer
+from perkeeppy.uploadhelper import UploadHelper
+from perkeeppy.exceptions import NotPerkeepServerError
 
 
 version = pkg_resources.get_distribution("perkeeppy").version
@@ -45,20 +56,17 @@ class Connection(object):
         self.sign_root = sign_root
         self.uploadhelper_root = uploadhelper_root
 
-        from perkeeppy.blobclient import BlobClient
         self.blobs = BlobClient(
             http_session=http_session,
             base_url=blob_root,
         )
 
-        from perkeeppy.searchclient import SearchClient
         self.searcher = SearchClient(
             http_session=http_session,
             base_url=search_root,
         )
 
         if sign_root:
-            from perkeeppy.signing import Signer
             self.signer = Signer(
                 http_session=http_session,
                 base_url=sign_root
@@ -67,7 +75,6 @@ class Connection(object):
             self.signer = None
 
         if uploadhelper_root:
-            from perkeeppy.uploadhelper import UploadHelper
             self.uploadhelper = UploadHelper(
                 http_session=http_session,
                 base_url=uploadhelper_root
@@ -79,13 +86,10 @@ class Connection(object):
 # Internals of the public "connect" function, split out so we can easily test
 # it with a mock http_session while not making the public interface look weird.
 def _connect(base_url, http_session):
-    from urllib.parse import urljoin
-
     config_url = urljoin(base_url, '?camli.mode=config')
     config_resp = http_session.get(config_url)
 
     if config_resp.status_code != 200:
-        from perkeeppy.exceptions import NotPerkeepServerError
         raise NotPerkeepServerError(
             "Configuration request returned %i %s" % (
                 config_resp.status_code,
@@ -103,7 +107,6 @@ def _connect(base_url, http_session):
     except ValueError:
         # Assume ValueError means JSON decoding failed, which means this
         # thing is not acting like a valid Perkeep server.
-        from perkeeppy.exceptions import NotPerkeepServerError
         raise NotPerkeepServerError(
             "Server did not return valid JSON at %s" % config_url
         )
@@ -150,8 +153,6 @@ def connect(base_url):
     only possible when connecting via ``localhost``. In future this function
     will be extended with some options for configuring authentication.
     """
-    import requests
-
     http_session = requests.Session()
     http_session.trust_env = False
     http_session.headers["User-Agent"] = user_agent

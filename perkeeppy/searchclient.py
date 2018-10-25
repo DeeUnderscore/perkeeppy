@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+
+import json
+
+from perkeeppy.exceptions import ServerFeatureUnavailableError, ServerError
+
+from dateutil.parser import parse
+from urllib.parse import urljoin
 
 
 class SearchClient(object):
@@ -28,34 +36,33 @@ class SearchClient(object):
 
     def _make_url(self, path):
         if self.base_url is not None:
-            from urllib.parse import urljoin
             return urljoin(self.base_url, path)
         else:
-            from perkeeppy.exceptions import ServerFeatureUnavailableError
             raise ServerFeatureUnavailableError(
                 "Server does not support search interface"
             )
 
-    def query(self, expression):
+    def query(self, q):
         """
         Run a query against the index, returning an iterable of
         :py:class:`SearchResult`.
 
-        The given expression is just passed on verbatim to the underlying
+        The given q is just passed on verbatim to the underlying
         query interface.
 
         Query constraints are not yet supported.
         """
-        import json
         req_url = self._make_url("camli/search/query")
+        assert isinstance(q, (str, dict))
 
-        data = {
-            # TODO: Understand how constraints work and implement them
-            # https://github.com/bradfitz/camlistore/blob/
-            # ca58231336e5711abacb059763beb06e8b2b1788/pkg/search/query.go#L255
-            # "constraint": "",
-            "expression": expression,
-        }
+        data = dict()
+
+        if isinstance(q, str):
+            data['expression'] = q
+        elif isinstance(q, dict):
+            # TODO: Maybe create Query Builder Pattern class type to support pythonic constraint
+            # constraint is just a json object as described here: https://perkeep.org/pkg/search#Constraint
+            data['constraint'] = q
 
         resp = self.http_session.post(
             req_url,
@@ -63,10 +70,9 @@ class SearchClient(object):
         )
 
         if resp.status_code != 200:
-            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to search for %r: server returned %i %s" % (
-                    expression,
+                    json.dumps(q),
                     resp.status_code,
                     resp.reason,
                 )
@@ -91,7 +97,6 @@ class SearchClient(object):
         indexer. The level of detail in the returned object will thus
         depend on what the indexer knows about the given object.
         """
-        import json
         req_url = self._make_url("camli/search/describe")
         resp = self.http_session.get(
             req_url,
@@ -101,7 +106,6 @@ class SearchClient(object):
         )
 
         if resp.status_code != 200:
-            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to describe %s: server returned %i %s" % (
                     blobref,
@@ -135,7 +139,6 @@ class SearchClient(object):
         attributes, rather than requiring the client to process the claims
         itself.
         """
-        import json
         req_url = self._make_url("camli/search/claims")
         resp = self.http_session.get(
             req_url,
@@ -143,7 +146,6 @@ class SearchClient(object):
         )
 
         if resp.status_code != 200:
-            from perkeeppy.exceptions import ServerError
             raise ServerError(
                 "Failed to get claims for %s: server returned %i %s" % (
                     blobref,
@@ -311,7 +313,6 @@ class ClaimMeta(object):
         to order them and to allow the indexer to decide the state of
         a permanode on any given date, by filtering later permanodes.
         """
-        from dateutil.parser import parse
 
         raw = self.raw_dict.get("date")
         if raw is not None:

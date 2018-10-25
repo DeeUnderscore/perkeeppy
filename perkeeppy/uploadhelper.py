@@ -1,5 +1,8 @@
-import io
+# -*- coding: utf-8 -*-
 
+import requests
+
+from .exceptions import ServerError
 
 class UploadHelper(object):
     """
