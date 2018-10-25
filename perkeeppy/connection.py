@@ -2,7 +2,6 @@
 
 
 import json
-import pkg_resources
 from urllib.parse import urljoin
 
 import requests

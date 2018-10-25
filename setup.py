@@ -1,9 +1,11 @@
 from setuptools import setup, find_packages
-from perkeeppy import __version__
+
+# THIS doesnt work if with tox run
+#from perkeeppy import __version__
 
 setup(
     name="perkeeppy",
-    version=__version__,
+    version='0.1.1',
     description="Library for interacting with the Perkeep API",
     packages=find_packages(),
     maintainer="Dariusz Anzorge",
