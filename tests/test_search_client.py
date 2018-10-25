@@ -80,7 +80,7 @@ class TestSearchClient(unittest.TestCase):
             base_url="http://example.com/s/",
         )
 
-        results = searcher.query(dict(file=dict()))
+        results = searcher.query(dict(constraint=dict(file=dict())))
 
         http_session.post.assert_called_with(
             'http://example.com/s/camli/search/query',

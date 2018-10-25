@@ -55,16 +55,14 @@ class SearchClient(object):
         req_url = self._make_url("camli/search/query")
         assert isinstance(q, (str, dict))
 
-        data = dict()
-
         if isinstance(q, str):
-            data['expression'] = q
+            data = dict(expression=q)
         elif isinstance(q, dict):
             # TODO: Maybe create Query Builder Pattern class type to
             #   support pythonic constraint
             # constraint is just a json object as described here:
             #   https://perkeep.org/pkg/search#Constraint
-            data['constraint'] = q
+            data = q
 
         resp = self.http_session.post(
             req_url,

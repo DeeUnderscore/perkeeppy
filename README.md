@@ -50,3 +50,4 @@ This library is licensed under the MIT license. For details, see [LICENSE](/LICE
 ## Links ##
 
 * Constraints: https://perkeep.org/pkg/search#Constraint
+* Permanodes Attributes: https://perkeep.org/doc/schema/permanode#attributes
