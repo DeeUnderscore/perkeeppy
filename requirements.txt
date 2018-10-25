@@ -1,5 +1,2 @@
-pycodestyle
 python-dateutil
-requests-mock
-requests-toolbelt
 requests
