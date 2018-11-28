@@ -2,7 +2,7 @@
 
 import requests
 
-from .exceptions import ServerError
+from perkeeppy.exceptions import ServerError
 
 
 class UploadHelper(object):
