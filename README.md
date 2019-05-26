@@ -26,7 +26,7 @@ conn = perkeeppy.connect('http://localhost:3179')  # Use the base URL for the Pe
 my_blob = perkeeppy.Blob(b'Hello, world!')  # Blobs carry bytes
 blobref = conn.blobs.put(my_blob)
 
-received_blob = conn.blob_root.get(blobref)
+received_blob = conn.blobs.get(blobref)
 print(f'{received_blob.blobref}: {received_blob.data.decode()}')
 ```
 
