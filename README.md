@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/daymien/perkeeppy.svg?branch=master)](https://travis-ci.org/daymien/perkeeppy)
+[![Build Status](https://travis-ci.org/DeeUnderscore/perkeeppy.svg?branch=master)](https://travis-ci.org/DeeUnderscore/perkeeppy)
 
 
 # perkeeppy
