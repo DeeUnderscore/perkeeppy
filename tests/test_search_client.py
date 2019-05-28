@@ -12,7 +12,7 @@ from perkeeppy.searchclient import (
 
 class TestSearchClient(unittest.TestCase):
 
-    def test_query(self):
+    def test_query_expression(self):
         http_session = MagicMock()
         http_session.post = MagicMock()
 
@@ -43,6 +43,48 @@ class TestSearchClient(unittest.TestCase):
         http_session.post.assert_called_with(
             'http://example.com/s/camli/search/query',
             data='{"expression": "dummyquery"}',
+        )
+
+        self.assertEqual(
+            [type(result) for result in results],
+            [SearchResult, SearchResult],
+        )
+        self.assertEqual(
+            [result.blobref for result in results],
+            ["dummy-1", "dummy-2"],
+        )
+
+    def test_query_constraint(self):
+        http_session = MagicMock()
+        http_session.post = MagicMock()
+
+        response = MagicMock()
+        http_session.post.return_value = response
+
+        response.status_code = 200
+        response.content = """
+        {
+            "blobs": [
+                {
+                    "blob": "dummy-1"
+                },
+                {
+                    "blob": "dummy-2"
+                }
+            ]
+        }
+        """
+
+        searcher = SearchClient(
+            http_session=http_session,
+            base_url="http://example.com/s/",
+        )
+
+        results = searcher.query(dict(constraint=dict(file=dict())))
+
+        http_session.post.assert_called_with(
+            'http://example.com/s/camli/search/query',
+            data='{"constraint": {"file": {}}}',
         )
 
         self.assertEqual(

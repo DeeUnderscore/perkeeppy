@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/daymien/perkeeppy.svg?branch=master)](https://travis-ci.org/daymien/perkeeppy)
+
+
 # perkeeppy
 
 **perkeeppy** is a library for interacting with the HTTP API of a Perkeep server from Python 3.
@@ -43,3 +46,8 @@ The rendered HTML files will be in `docs/build/html`, with the index at `docs/bu
 You can find the project repository at [github.com/DeeUnderscore/perkeeppy](https://github.com/DeeUnderscore/perkeeppy).
 
 This library is licensed under the MIT license. For details, see [LICENSE](/LICENSE).
+
+## Links ##
+
+* Constraints: https://perkeep.org/pkg/search#Constraint
+* Permanodes Attributes: https://perkeep.org/doc/schema/permanode#attributes

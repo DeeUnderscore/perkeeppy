@@ -1,4 +1,8 @@
-import io
+# -*- coding: utf-8 -*-
+
+import requests
+
+from perkeeppy.exceptions import ServerError
 
 
 class UploadHelper(object):
