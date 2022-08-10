@@ -140,21 +140,20 @@ def _connect(base_url, http_session):
     )
 
 
-def connect(base_url):
+def connect(base_url, username="", password=""):
     """
     Create a connection to the Perkeep instance at the given base URL.
+    If authentication is required, the USERNAME and PASSWORD must be given.
 
     This function implements the Perkeep discovery protocol to recognize a
     server and automatically determine which features are available, ultimately
     instantiating and returning a :py:class:`Connection` object.
-
-    For now we assume an unauthenticated connection, which is generally
-    only possible when connecting via ``localhost``. In future this function
-    will be extended with some options for configuring authentication.
     """
     http_session = requests.Session()
     http_session.trust_env = False
     http_session.headers["User-Agent"] = user_agent
+    if username and password:
+        http_session.auth = (username, password)
     # TODO: let the caller pass in a trusted SSL cert and then turn
     # on SSL cert verification. Until we do that we're vulnerable to
     # certain types of MITM attack on our SSL connections.
