@@ -80,12 +80,18 @@ class SearchClient(object):
 
         raw_data = json.loads(resp.content)
 
-        if raw_data["blobs"] is not None:
-            return [
-                SearchResult(x["blob"]) for x in raw_data["blobs"]
-            ]
-        else:
+        if raw_data["blobs"] is None:
             return []
+
+        # TODO add related blob's descriptions, aka other_raw_dicts
+        meta = raw_data.get("description", {}).get("meta", {})
+        return [
+            SearchResult(
+                x["blob"],
+                BlobDescription(self, meta[x["blob"]]) if meta else None
+            )
+            for x in raw_data["blobs"]
+        ]
 
     def describe_blob(self, blobref):
         """
@@ -168,8 +174,9 @@ class SearchResult(object):
     #: The blobref of the blob represented by this search result.
     blobref = None
 
-    def __init__(self, blobref):
+    def __init__(self, blobref, describe=None):
         self.blobref = blobref
+        self.describe = describe
 
     def __repr__(self):
         return "<perkeeppy.searchclient.SearchResult %s>" % self.blobref

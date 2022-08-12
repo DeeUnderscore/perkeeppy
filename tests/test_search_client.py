@@ -198,6 +198,73 @@ class TestSearchClient(unittest.TestCase):
             [1, 2],
         )
 
+    def test_query_describe(self):
+        http_session = MagicMock()
+        http_session.post = MagicMock()
+        response = MagicMock()
+        http_session.post.return_value = response
+        response.status_code = 200
+        response.content = """
+        {
+          "blobs": [
+            {
+              "blob": "sha1-1234"
+            }
+          ],
+          "description": {
+            "meta": {
+              "sha1-1234": {
+                "blobRef": "sha1-1234",
+                "camliType": "permanode",
+                "size": 564,
+                "permanode": {
+                  "attr": {
+                    "camliContent": [
+                      "sha224-abcd"
+                    ]
+                  },
+                  "modtime": "2022-08-08T11:21:45.803Z"
+                }
+              },
+              "sha224-abcd": {
+                "blobRef": "sha224-abcd",
+                "camliType": "file",
+                "size": 201,
+                "file": {
+                  "fileName": "hello.txt",
+                  "size": 11,
+                  "mimeType": "text/plain",
+                  "wholeRef": "sha224-xyz0"
+                }
+              }
+            }
+          },
+          "LocationArea": null,
+          "continue": "pn:1659957705803000000:sha1-1234"
+        }
+        """
+        searcher = SearchClient(
+            http_session=http_session, base_url="http://example.com/s/"
+        )
+        q = {
+            "sort": "-created",
+            "constraint": None,
+            "describe": {
+                "depth": 1,
+                "rules": [{"attrs": ["camliContent", "camliContentImage"]}],
+            },
+            "limit": 1,
+        }
+
+        results = searcher.query(q)
+
+        self.assertEqual(len(results), 1)
+        result = results[0]
+        self.assertEqual(result.blobref, "sha1-1234")
+        self.assertEqual(type(result.describe), BlobDescription)
+        self.assertEqual(result.describe.blobref, "sha1-1234")
+        self.assertEqual(result.describe.raw_dict["camliType"], "permanode")
+
 
 class TestClaimMeta(unittest.TestCase):
 
