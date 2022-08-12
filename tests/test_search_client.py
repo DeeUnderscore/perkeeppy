@@ -264,6 +264,11 @@ class TestSearchClient(unittest.TestCase):
         self.assertEqual(type(result.describe), BlobDescription)
         self.assertEqual(result.describe.blobref, "sha1-1234")
         self.assertEqual(result.describe.raw_dict["camliType"], "permanode")
+        self.assertEqual(list(result.describe.other_raw_dicts.keys()),
+                         ["sha224-abcd"])
+        related = result.describe.other_raw_dicts["sha224-abcd"]
+        self.assertEqual(related["camliType"], "file")
+        self.assertEqual(related["file"]["fileName"], "hello.txt")
 
 
 class TestClaimMeta(unittest.TestCase):

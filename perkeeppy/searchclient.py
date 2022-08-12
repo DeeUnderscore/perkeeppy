@@ -83,15 +83,61 @@ class SearchClient(object):
         if raw_data["blobs"] is None:
             return []
 
-        # TODO add related blob's descriptions, aka other_raw_dicts
         meta = raw_data.get("description", {}).get("meta", {})
-        return [
-            SearchResult(
-                x["blob"],
-                BlobDescription(self, meta[x["blob"]]) if meta else None
-            )
-            for x in raw_data["blobs"]
-        ]
+
+        def build_ref_index(meta):
+            ref_index = dict()
+            for blob in meta.values():
+                ref = blob["blobRef"]
+
+                if ref_index.get(ref) is None:
+                    ref_index[ref] = []
+
+                if blob["camliType"] == "permanode":
+                    camli_content = blob.get("permanode", {}) \
+                                        .get("attr", {}) \
+                                        .get("camliContent", [])
+                    if camli_content:
+                        for content_ref in camli_content:
+                            ref_index[ref].append(content_ref)
+                elif blob["camliType"] == "file":
+                    whole_ref = blob.get("file", {}).get("wholeRef")
+                    if whole_ref:
+                        ref_index[ref].append(whole_ref)
+
+            return ref_index
+
+        def find_related_blobs(ref, ref_index):
+            related = {}
+            queue = []
+            queue.append(ref)
+            visited = dict()
+
+            while len(queue) > 0:
+                refs = queue.pop(0)
+
+                for ref in ref_index.get(refs, []):
+                    if not visited.get(ref):
+                        if ref in meta:
+                            related[ref] = meta[ref]
+
+                        visited[ref] = True
+                        queue.append(ref)
+
+            return related
+
+        results = []
+        ref_index = build_ref_index(meta)
+        for x in raw_data["blobs"]:
+            ref = x["blob"]
+            blob_desc = None
+            if meta:
+                describe = meta[ref]
+                related = find_related_blobs(ref, ref_index)
+                blob_desc = BlobDescription(self, describe, related)
+            results.append(SearchResult(ref, blob_desc))
+
+        return results
 
     def describe_blob(self, blobref):
         """
